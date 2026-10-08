@@ -34,6 +34,12 @@ export function formatLongDay(d: Date = new Date()): string {
   return fDay.format(d);
 }
 /** YYYY-MM-DD of a moment in the business timezone. */
+/** "Good morning" / "Good afternoon" / "Good evening" in the business timezone. */
+export function greeting(d: Date = new Date()): string {
+  const h = Number(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', hourCycle: 'h23' }).format(d));
+  return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+}
+
 export function localDateKey(d: Date | string = new Date()): string {
   const parts = fKey.formatToParts(typeof d === 'string' ? new Date(d) : d);
   const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';

@@ -3,17 +3,18 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ThemeToggle } from './ThemeToggle';
+import { Icon, type IconName } from './Icon';
 import { signOutAction } from '@/lib/actions';
 
 export interface NavItem {
   href: string;
   label: string;
+  icon: IconName;
   count?: number;
   match?: string[];
 }
 
-export function Sidebar({ items, userLine }: { items: NavItem[]; userLine: string }) {
+export function Sidebar({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -25,7 +26,10 @@ export function Sidebar({ items, userLine }: { items: NavItem[]; userLine: strin
   return (
     <nav className={`side${open ? ' open' : ''}`} aria-label="Main">
       <div className="brand">
-        <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Team Tasks</Link>
+        <Link href="/" className="brand-link">
+          <span className="brand-mark"><Icon name="logo" size={20} /></span>
+          TEAM TASKS
+        </Link>
         <button
           type="button"
           className="btn sm menu-btn"
@@ -38,24 +42,18 @@ export function Sidebar({ items, userLine }: { items: NavItem[]; userLine: strin
       </div>
 
       <div className="nav-links" id="nav-links">
-        <form action="/search" className="field" style={{ padding: '0 2px 10px' }} role="search">
-          <label htmlFor="global-q" className="sr-only">Search tasks and employees</label>
-          <input id="global-q" name="q" type="search" className="input" placeholder="Search…" />
-        </form>
         {items.map((it) => (
           <Link key={it.href} href={it.href} className={`nav${isOn(it) ? ' on' : ''}`} aria-current={isOn(it) ? 'page' : undefined}>
-            {it.label}
+            <span className="nav-icon"><Icon name={it.icon} />{it.label}</span>
             {it.count ? <span className="cnt">{it.count}</span> : null}
           </Link>
         ))}
       </div>
 
       <div className="side-foot">
-        <ThemeToggle />
         <form action={signOutAction}>
-          <button type="submit" className="nav">Sign out</button>
+          <button type="submit" className="nav"><span className="nav-icon"><Icon name="logout" />Sign out</span></button>
         </form>
-        <div className="side-user">{userLine}</div>
       </div>
     </nav>
   );

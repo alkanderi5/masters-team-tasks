@@ -5,6 +5,7 @@ import { getBlockedTasks, getDashboardCounts, getEmployeeSummaries } from '@/lib
 import { formatDuration, formatLongDay, formatShort } from '@/lib/format';
 import { SectionHead, StatusIcon, Empty, pathText } from '@/components/ui';
 import { AddTaskButton } from '@/components/TaskControls';
+import { Icon } from '@/components/Icon';
 
 export const metadata = { title: 'Dashboard' };
 
@@ -31,27 +32,27 @@ export default async function DashboardPage() {
       />
       <div className="kpis">
         <Link href="/employees" className="card kpi">
-          <div className="sec">Employees</div>
+          <div className="kpi-label"><span className="kpi-ic ac-blue"><Icon name="users" /></span>Employees</div>
           <div className="num">{c.employees}</div>
           <div className="foot">Active</div>
         </Link>
         <Link href="/tasks?scope=jobs" className="card kpi">
-          <div className="sec">Open jobs</div>
+          <div className="kpi-label"><span className="kpi-ic ac-purple"><Icon name="jobs" /></span>Open jobs</div>
           <div className="num">{c.jobs_open}</div>
           <div className="foot">{c.tasks_open} tasks · {c.jobs_not_started} jobs not started</div>
         </Link>
         <Link href="/tasks?scope=jobs&status=in_progress" className="card kpi">
-          <div className="sec" style={{ color: 'var(--ip-text)' }}>In progress</div>
+          <div className="kpi-label"><span className="kpi-ic ac-orange"><Icon name="progress" /></span>In progress</div>
           <div className="num">{c.jobs_in_progress}</div>
           <div className="foot">{c.tasks_in_progress} tasks</div>
         </Link>
         <Link href="/blocked" className="card kpi blocked">
-          <div className="sec">Jobs with blocked work</div>
+          <div className="kpi-label"><span className="kpi-ic ac-red"><Icon name="blocked" /></span>Jobs with blocked work</div>
           <div className="num">{c.jobs_with_blocked}</div>
           <div className="foot">{c.tasks_blocked} blocked task{c.tasks_blocked === 1 ? '' : 's'}, any level</div>
         </Link>
         <Link href="/history?range=today" className="card kpi">
-          <div className="sec" style={{ color: 'var(--dn-text)' }}>Completed today</div>
+          <div className="kpi-label"><span className="kpi-ic ac-green"><Icon name="done" /></span>Completed today</div>
           <div className="num">{c.jobs_completed_today}</div>
           <div className="foot">{c.tasks_completed_today} tasks</div>
         </Link>

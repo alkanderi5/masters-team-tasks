@@ -19,9 +19,9 @@ function SunIcon() {
   );
 }
 
-/** Day / night (dark blue) switch. Remembered in a cookie so the server renders the right theme. */
+/** Day / night switch (night is the default). Remembered in a cookie so the server renders the right theme. */
 export function ThemeToggle() {
-  const [night, setNight] = useState(false);
+  const [night, setNight] = useState(true);
 
   useEffect(() => {
     setNight(document.documentElement.classList.contains('night'));
@@ -35,11 +35,14 @@ export function ThemeToggle() {
   }
 
   return (
-    <button type="button" className="nav" onClick={toggle}>
-      <span className="nav-icon">
-        {night ? <SunIcon /> : <MoonIcon />}
-        {night ? 'Day mode' : 'Night mode'}
-      </span>
+    <button
+      type="button"
+      className="icon-btn"
+      onClick={toggle}
+      aria-label={night ? 'Switch to day mode' : 'Switch to night mode'}
+      title={night ? 'Day mode' : 'Night mode'}
+    >
+      {night ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }
