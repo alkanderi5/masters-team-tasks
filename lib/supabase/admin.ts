@@ -1,5 +1,6 @@
 import 'server-only';
 import { createClient } from '@supabase/supabase-js';
+import { supabaseUrl } from './url';
 
 /**
  * Service-role client. Used ONLY to create, disable or reset employee
@@ -10,7 +11,7 @@ export function createAdminClient() {
   if (!key) {
     throw new Error('Login accounts need SUPABASE_SERVICE_ROLE_KEY to be set on the server.');
   }
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, key, {
+  return createClient(supabaseUrl(), key, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 }
