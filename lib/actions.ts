@@ -30,7 +30,13 @@ const str = (fd: FormData, k: string) => String(fd.get(k) ?? '').trim();
 export async function signInAction(_prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email: str(fd, 'email'), password: String(fd.get('password') ?? '') });
-  if (error) return { ok: false, error: 'Incorrect email or password' };
+  if (error) {
+    if (error.code === 'invalid_credentials') return { ok: false, error: 'Incorrect email or password' };
+    if (error.code === 'email_not_confirmed') return { ok: false, error: 'This email is not confirmed yet. Ask your manager to confirm it.' };
+    // Configuration problems (wrong key or URL) would otherwise look like a bad password.
+    console.error('Sign-in failed:', error);
+    return { ok: false, error: `Sign-in failed: ${error.message}` };
+  }
   redirect('/');
 }
 
